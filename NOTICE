@@ -1,0 +1,5 @@
+This collection is a modified derivative of the CASTLE-Source project,
+distributed under the MIT License (see LICENSE for the original copyright notice).
+
+Files have been renamed, reordered and reformatted, comments and descriptive
+headers have been removed, and some identifiers and messages have been renamed.

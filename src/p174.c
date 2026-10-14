@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <sqlite3.h>
+
+int main() {
+    sqlite3 *db;
+    sqlite3_stmt *res;
+    int rc;
+
+    rc = sqlite3_open("students.db", &db);
+
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return 1;
+    }
+
+    rc = sqlite3_prepare_v2(db, "SELECT * FROM students", -1, &res, 0);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return 1;
+    }
+
+    while (sqlite3_step(res) == SQLITE_ROW) {
+        int id = sqlite3_column_int(res, 0);
+        const unsigned char *name = sqlite3_column_text(res, 1);
+        const unsigned char *grade = sqlite3_column_text(res, 2);
+
+        printf("Name: %s, Grade: %s\n", name, grade);
+    }
+
+    sqlite3_finalize(res);
+    sqlite3_close(db);
+
+    return 0;
+}
